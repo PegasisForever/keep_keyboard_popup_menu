@@ -2,7 +2,7 @@
 
 A popup menu that will keep the soft keyboard open. This package is created to solve issue [#24843](https://github.com/flutter/flutter/issues/24843) and [#50567](https://github.com/flutter/flutter/issues/50567).
 
-![](https://raw.githubusercontent.com/PegasisForever/keep_keyboard_popup_menu/master/example/screenshots/1.gif | width=200)
+<img src="https://raw.githubusercontent.com/PegasisForever/keep_keyboard_popup_menu/master/example/screenshots/1.gif" width="200"/>
 
 # How Does It work?
 
