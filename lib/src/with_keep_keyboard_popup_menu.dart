@@ -13,19 +13,36 @@ const double _kMenuMinWidth = 2.0 * _kMenuWidthStep;
 
 const double _kMenuVerticalPadding = 8.0;
 
+/// Used to build the widget that is going to open the popup menu. This widget
+/// can call [openPopup] to open the popup menu.
 typedef Widget ChildBuilder(
   BuildContext context,
   OpenPopupFn openPopup,
 );
-typedef List<KeepKeyboardPopupMenuItem> MenuItemBuilder(
-  BuildContext context,
-  ClosePopupFn closePopup,
-);
+
+/// Used to build the custom widget inside the popup menu. The widget can call
+/// [openPopup] to open the popup menu. [WithKeepKeyboardPopupMenu] will then
+/// wrap your widget in a [ListView].
 typedef Widget MenuBuilder(
   BuildContext context,
   ClosePopupFn closePopup,
 );
+
+/// Used to build the item list inside the popup menu. Widgets can call
+/// [openPopup] to open the popup menu. [WithKeepKeyboardPopupMenu] will then
+/// wrap this list in a [ListView] with vertical padding of
+/// [_kMenuVerticalPadding].
+typedef List<KeepKeyboardPopupMenuItem> MenuItemBuilder(
+  BuildContext context,
+  ClosePopupFn closePopup,
+);
+
+/// Function type to open the popup menu, returns a future that resolves when
+/// the opening animation stops.
 typedef Future<void> OpenPopupFn();
+
+/// Function type to close the popup menu, returns a future that resolves when
+/// the closing animation stops.
 typedef Future<void> ClosePopupFn();
 
 enum PopupMenuState {
@@ -35,19 +52,47 @@ enum PopupMenuState {
   CLOSING,
 }
 
+/// Allow it's child (from [childBuilder]) to open a popup menu (from either
+/// [menuBuilder] or [menuItemBuilder]) with customizable background
+/// (though [backgroundBuilder]) at customizable position (though
+/// [calculatePopupPosition]).
+///
+/// Unlike the popup menu created by [PopupMenuButton], which works by pushing
+/// a new route to the navigator and causes the soft keyboard to hide, the popup
+/// menu created by [WithKeepKeyboardPopupMenu] works by adding an entry to
+/// [Overlay] and will keep the soft keyboard open.
+///
+/// Note that you can't use [PopupMenuItem] with [WithKeepKeyboardPopupMenu]
+/// because [PopupMenuItem] will pop the current route when tapped. Since
+/// [WithKeepKeyboardPopupMenu] does not push a new route, this will cause the
+/// page behind the popup menu be popped. Use [KeepKeyboardPopupMenuItem]
+/// instead.
 class WithKeepKeyboardPopupMenu extends StatefulWidget {
+  /// Build the widget inside the popup menu.
   final ChildBuilder childBuilder;
+
+  /// Build the custom widget inside the popup menu. If passed value to
+  /// [menuBuilder], [menuItemBuilder] must be null.
   final MenuBuilder? menuBuilder;
+
+  /// Build the item list inside the popup menu.If passed value to
+  /// [menuItemBuilder], [menuBuilder] must be null.
   final MenuItemBuilder? menuItemBuilder;
-  final CalculateMenuPosition? calculateMenuPosition;
-  final PopupMenuBackgroundBuilder? backgroundBuilder;
+
+  /// Calculate the position of the popup, defaults to
+  /// [_defaultCalculatePopupPosition]
+  final CalculatePopupPosition calculatePopupPosition;
+
+  /// Build the background of the popup menu, defaults to
+  /// [_defaultBackgroundBuilder]
+  final PopupMenuBackgroundBuilder backgroundBuilder;
 
   WithKeepKeyboardPopupMenu({
     required this.childBuilder,
     this.menuBuilder,
     this.menuItemBuilder,
-    this.calculateMenuPosition,
-    this.backgroundBuilder,
+    this.calculatePopupPosition = _defaultCalculatePopupPosition,
+    this.backgroundBuilder = _defaultBackgroundBuilder,
     Key? key,
   })  : assert((menuBuilder == null) != (menuItemBuilder == null),
             'You can only pass one of [menuBuilder] and [menuItemBuilder].'),
@@ -62,14 +107,14 @@ class WithKeepKeyboardPopupMenuState extends State<WithKeepKeyboardPopupMenu> {
   final GlobalKey _childKey = GlobalKey();
   GlobalKey<AnimatedPopupMenuState> _menuKey = GlobalKey();
   OverlayEntry? _entry;
-  PopupMenuState menuState = PopupMenuState.CLOSED;
+  PopupMenuState popupState = PopupMenuState.CLOSED;
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (menuState == PopupMenuState.OPENED ||
-            menuState == PopupMenuState.OPENING) {
+        if (popupState == PopupMenuState.OPENED ||
+            popupState == PopupMenuState.OPENING) {
           closePopupMenu();
           return false;
         } else {
@@ -124,9 +169,10 @@ class WithKeepKeyboardPopupMenuState extends State<WithKeepKeyboardPopupMenu> {
     }
   }
 
+  /// Only has effect when popup is fully closed.
   Future<void> openPopupMenu() async {
-    if (menuState == PopupMenuState.CLOSED) {
-      menuState = PopupMenuState.OPENING;
+    if (popupState == PopupMenuState.CLOSED) {
+      popupState = PopupMenuState.OPENING;
 
       final openMenuCompleter = Completer<void>();
 
@@ -142,7 +188,7 @@ class WithKeepKeyboardPopupMenuState extends State<WithKeepKeyboardPopupMenu> {
               delegate: PopupMenuRouteLayout(
                 buttonRect: _getChildRect(),
                 overlayRect: _getOverlayRect(context),
-                calculateMenuPosition: widget.calculateMenuPosition,
+                calculatePopupPosition: widget.calculatePopupPosition,
               ),
               child: AnimatedPopupMenu(
                 key: _menuKey,
@@ -172,17 +218,51 @@ class WithKeepKeyboardPopupMenuState extends State<WithKeepKeyboardPopupMenu> {
       overlay.insert(_entry!);
 
       await openMenuCompleter.future;
-      menuState = PopupMenuState.OPENED;
+      popupState = PopupMenuState.OPENED;
     }
   }
 
+  /// Only has effect when popup is fully opened or opening.
   Future<void> closePopupMenu() async {
-    if (menuState == PopupMenuState.OPENED ||
-        menuState == PopupMenuState.OPENING) {
-      menuState = PopupMenuState.CLOSING;
+    if (popupState == PopupMenuState.OPENED ||
+        popupState == PopupMenuState.OPENING) {
+      popupState = PopupMenuState.CLOSING;
       await _menuKey.currentState!.hideMenu();
       _entry!.remove();
-      menuState = PopupMenuState.CLOSED;
+      popupState = PopupMenuState.CLOSED;
     }
   }
+}
+
+Widget _defaultBackgroundBuilder(BuildContext context, Widget child) {
+  return Material(
+    elevation: 8,
+    child: child,
+  );
+}
+
+Offset _defaultCalculatePopupPosition(
+    Size menuSize, Rect overlayRect, Rect buttonRect) {
+  double y = buttonRect.top;
+
+  double x;
+  if (buttonRect.left - overlayRect.left >
+      overlayRect.right - buttonRect.right) {
+    // If button is closer to the right edge, grow to the left.
+    x = buttonRect.right - menuSize.width;
+  } else {
+    x = buttonRect.left;
+  }
+
+  // Avoid going outside an area defined as the rectangle 8.0 pixels from the
+  // edge of the screen in every direction.
+  if (x < kMenuScreenPadding + overlayRect.left)
+    x = kMenuScreenPadding + overlayRect.left;
+  else if (x + menuSize.width > overlayRect.right - kMenuScreenPadding)
+    x = overlayRect.right - menuSize.width - kMenuScreenPadding;
+  if (y < kMenuScreenPadding + overlayRect.top)
+    y = kMenuScreenPadding + overlayRect.top;
+  else if (y + menuSize.height > overlayRect.bottom - kMenuScreenPadding)
+    y = overlayRect.bottom - menuSize.height - kMenuScreenPadding;
+  return Offset(x, y);
 }

@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'percentage_size.dart';
 
+/// Used to build the background of the popup menu. [child] is the content of
+/// the popup menu.
 typedef Widget PopupMenuBackgroundBuilder(
   BuildContext context,
   Widget child,
 );
 
+/// Implements the menu opening and closing animation.
 class AnimatedPopupMenu extends StatefulWidget {
   final Widget child;
   final VoidCallback? onFullyOpened;
@@ -15,10 +18,9 @@ class AnimatedPopupMenu extends StatefulWidget {
   const AnimatedPopupMenu({
     Key? key,
     required this.child,
+    required this.backgroundBuilder,
     this.onFullyOpened,
-    PopupMenuBackgroundBuilder? backgroundBuilder,
-  })  : this.backgroundBuilder = backgroundBuilder ?? _defaultBackgroundBuilder,
-        super(key: key);
+  })  : super(key: key);
 
   @override
   AnimatedPopupMenuState createState() => AnimatedPopupMenuState();
@@ -111,9 +113,3 @@ class AnimatedPopupMenuState extends State<AnimatedPopupMenu>
   }
 }
 
-Widget _defaultBackgroundBuilder(BuildContext context, Widget child) {
-  return Material(
-    elevation: 8,
-    child: child,
-  );
-}

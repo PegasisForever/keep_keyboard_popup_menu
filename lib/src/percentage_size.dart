@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+/// A widget that sizes it self based on percentages of the size of its child.
 class PercentageSize extends SingleChildRenderObjectWidget {
   const PercentageSize({
     Key? key,
@@ -17,24 +18,24 @@ class PercentageSize extends SingleChildRenderObjectWidget {
   final double sizePercentage;
 
   @override
-  RenderPercentageSize createRenderObject(BuildContext context) {
-    return RenderPercentageSize(
+  _RenderPercentageSize createRenderObject(BuildContext context) {
+    return _RenderPercentageSize(
       alignment: alignment,
       clipBehavior: clipBehavior,
       sizePercentage: sizePercentage,
     );
   }
 
-  // only update sizePercentage after first created
+  /// Only update sizePercentage after first created
   @override
   void updateRenderObject(
-      BuildContext context, RenderPercentageSize renderObject) {
+      BuildContext context, _RenderPercentageSize renderObject) {
     renderObject.sizePercentage = sizePercentage;
   }
 }
 
-class RenderPercentageSize extends RenderAligningShiftedBox {
-  RenderPercentageSize({
+class _RenderPercentageSize extends RenderAligningShiftedBox {
+  _RenderPercentageSize({
     required AlignmentGeometry alignment,
     required double sizePercentage,
     RenderBox? child,

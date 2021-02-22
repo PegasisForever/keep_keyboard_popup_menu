@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
-const double _kMenuScreenPadding = 8.0;
+const double kMenuScreenPadding = 8.0;
 
-// menuSize: size of the context menu, always smaller than overlayRect.size
-// overlayRect: rect of the screen excluding keyboard and status bar
-// buttonRect: rect of the button that triggered context menu
-typedef Offset CalculateMenuPosition(
+/// Used to calculate the position of the popup.
+/// [menuSize]: size of the context menu, always smaller than [overlayRect.size]
+/// [overlayRect]: rect of the screen excluding keyboard and status bar
+/// [buttonRect]: rect of the button that triggered context menu
+typedef Offset CalculatePopupPosition(
   Size menuSize,
   Rect overlayRect,
   Rect buttonRect,
@@ -15,60 +16,33 @@ class PopupMenuRouteLayout extends SingleChildLayoutDelegate {
   PopupMenuRouteLayout({
     required this.buttonRect,
     required this.overlayRect,
-    CalculateMenuPosition? calculateMenuPosition,
-  }) : this.calculateMenuPosition =
-            calculateMenuPosition ?? _defaultCalculateMenuPosition;
+    required this.calculatePopupPosition,
+  });
 
-  // Rectangle of underlying button, relative to the overlay's dimensions.
+  /// Rect of the button that triggered this popup.
   final Rect buttonRect;
+
+  /// Rect of the screen excluding keyboard and status bar.
   final Rect overlayRect;
-  final CalculateMenuPosition calculateMenuPosition;
+
+  /// Function to calculate position of the popup.
+  final CalculatePopupPosition calculatePopupPosition;
 
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
-    // The menu can be at most the size of the overlay minus 8.0 pixels in each
-    // direction.
     return BoxConstraints.loose(
       overlayRect.size -
-              const Offset(_kMenuScreenPadding * 2, _kMenuScreenPadding * 2)
+              const Offset(kMenuScreenPadding * 2, kMenuScreenPadding * 2)
           as Size,
     );
   }
 
   @override
   Offset getPositionForChild(Size size, Size childSize) {
-    return calculateMenuPosition(childSize, overlayRect, buttonRect);
+    return calculatePopupPosition(childSize, overlayRect, buttonRect);
   }
 
   @override
   bool shouldRelayout(covariant SingleChildLayoutDelegate oldDelegate) => true;
 }
 
-Offset _defaultCalculateMenuPosition(
-    Size menuSize, Rect overlayRect, Rect buttonRect) {
-  // Find the ideal vertical position.
-  double y = buttonRect.top;
-
-  // Find the ideal horizontal position.
-  double x;
-  if (buttonRect.left - overlayRect.left >
-      overlayRect.right - buttonRect.right) {
-    // Menu button is closer to the right edge, so grow to the left, aligned to the right edge.
-    x = buttonRect.right - menuSize.width;
-  } else {
-    // Menu button is closer to the left edge, so grow to the right, aligned to the left edge.
-    x = buttonRect.left;
-  }
-
-  // Avoid going outside an area defined as the rectangle 8.0 pixels from the
-  // edge of the screen in every direction.
-  if (x < _kMenuScreenPadding + overlayRect.left)
-    x = _kMenuScreenPadding + overlayRect.left;
-  else if (x + menuSize.width > overlayRect.right - _kMenuScreenPadding)
-    x = overlayRect.right - menuSize.width - _kMenuScreenPadding;
-  if (y < _kMenuScreenPadding + overlayRect.top)
-    y = _kMenuScreenPadding + overlayRect.top;
-  else if (y + menuSize.height > overlayRect.bottom - _kMenuScreenPadding)
-    y = overlayRect.bottom - menuSize.height - _kMenuScreenPadding;
-  return Offset(x, y);
-}

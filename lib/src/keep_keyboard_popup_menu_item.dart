@@ -3,6 +3,8 @@ import 'package:flutter/widgets.dart';
 
 const double _kMenuHorizontalPadding = 16.0;
 
+/// KeepKeyboardPopup version of [PopupMenuItem]. This is quite different from
+/// [PopupMenuItem], this works more like a [ListTile].
 class KeepKeyboardPopupMenuItem extends StatelessWidget {
   final double height;
   final Widget? child;

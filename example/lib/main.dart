@@ -167,7 +167,7 @@ class _HomePageState extends State<HomePage> {
                         child: Text('Custom position'),
                       ),
                     ),
-                    calculateMenuPosition:
+                    calculatePopupPosition:
                         (Size menuSize, Rect overlayRect, Rect buttonRect) {
                       return Offset(8, 8);
                     },
