@@ -62,12 +62,12 @@ Offset _defaultCalculateMenuPosition(
 
   // Avoid going outside an area defined as the rectangle 8.0 pixels from the
   // edge of the screen in every direction.
-  if (x < _kMenuScreenPadding)
-    x = _kMenuScreenPadding;
+  if (x < _kMenuScreenPadding + overlayRect.left)
+    x = _kMenuScreenPadding + overlayRect.left;
   else if (x + menuSize.width > overlayRect.right - _kMenuScreenPadding)
     x = overlayRect.right - menuSize.width - _kMenuScreenPadding;
-  if (y < _kMenuScreenPadding)
-    y = _kMenuScreenPadding;
+  if (y < _kMenuScreenPadding + overlayRect.top)
+    y = _kMenuScreenPadding + overlayRect.top;
   else if (y + menuSize.height > overlayRect.bottom - _kMenuScreenPadding)
     y = overlayRect.bottom - menuSize.height - _kMenuScreenPadding;
   return Offset(x, y);
