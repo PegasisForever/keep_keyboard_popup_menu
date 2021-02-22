@@ -20,7 +20,7 @@ class AnimatedPopupMenu extends StatefulWidget {
     required this.child,
     required this.backgroundBuilder,
     this.onFullyOpened,
-  })  : super(key: key);
+  }) : super(key: key);
 
   @override
   AnimatedPopupMenuState createState() => AnimatedPopupMenuState();
@@ -112,4 +112,3 @@ class AnimatedPopupMenuState extends State<AnimatedPopupMenu>
     super.dispose();
   }
 }
-

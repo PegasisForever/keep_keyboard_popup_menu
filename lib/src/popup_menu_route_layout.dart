@@ -32,8 +32,7 @@ class PopupMenuRouteLayout extends SingleChildLayoutDelegate {
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
     return BoxConstraints.loose(
       overlayRect.size -
-              const Offset(kMenuScreenPadding * 2, kMenuScreenPadding * 2)
-          as Size,
+          const Offset(kMenuScreenPadding * 2, kMenuScreenPadding * 2) as Size,
     );
   }
 
@@ -45,4 +44,3 @@ class PopupMenuRouteLayout extends SingleChildLayoutDelegate {
   @override
   bool shouldRelayout(covariant SingleChildLayoutDelegate oldDelegate) => true;
 }
-
