@@ -5,6 +5,12 @@ const double _kMenuHorizontalPadding = 16.0;
 
 /// KeepKeyboardPopup version of [PopupMenuItem]. This is quite different from
 /// [PopupMenuItem], this works more like a [ListTile].
+///
+/// you can't use [PopupMenuItem] with [WithKeepKeyboardPopupMenu]
+/// because [PopupMenuItem] will pop the current route when tapped. Since
+/// [WithKeepKeyboardPopupMenu] does not push a new route, this will cause the
+/// page behind the popup menu be popped. Use [KeepKeyboardPopupMenuItem]
+/// instead.
 class KeepKeyboardPopupMenuItem extends StatelessWidget {
   final double height;
   final Widget? child;
