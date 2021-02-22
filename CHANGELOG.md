@@ -6,3 +6,7 @@
 ## [1.0.0-dev.1] - Feb. 21, 2021
 
 * Formatting code
+
+## [1.0.0-nullsafety.2] - Feb. 21, 2021
+
+* Only changes version name
