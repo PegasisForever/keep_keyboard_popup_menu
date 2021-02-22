@@ -1,0 +1,22 @@
+name: example
+description: Example of keep_keyboard_popup_menu.
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0-0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  keep_keyboard_popup_menu:
+    path: ../
+
+dev_dependencies:
+
+
+
+flutter:
+  uses-material-design: true

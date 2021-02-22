@@ -1,0 +1,115 @@
+import 'package:flutter/material.dart';
+import 'package:keep_keyboard_popup_menu/keep_keyboard_popup_menu.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Example',
+      home: HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatefulWidget {
+  HomePage({Key? key}) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('KeepKeyboardPopupMenuButton'),
+      ),
+      body: Align(
+        alignment: Alignment.bottomCenter,
+        child: Row(
+          children: [
+            Flexible(
+              flex: 0,
+              child: KeepKeyboardPopupMenuButton(
+                menuItemBuilder: (context, closePopup) => [
+                  KeepKeyboardPopupMenuItem(
+                    child: Text('awa'),
+                    onTap: closePopup,
+                  ),
+                  KeepKeyboardPopupMenuItem(
+                    child: Text('awa'),
+                    onTap: closePopup,
+                  ),
+                  KeepKeyboardPopupMenuItem(
+                    child: Text('awa'),
+                    onTap: closePopup,
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  autofocus: true,
+                  decoration: InputDecoration(
+                    filled: true,
+                  ),
+                ),
+              ),
+            ),
+            Flexible(
+              flex: 0,
+              child: KeepKeyboardPopupMenuButton(
+                menuBuilder: (context, closePopup) => Container(
+                  color: Colors.teal,
+                  child: InkWell(
+                    onTap: closePopup,
+                    child: SizedBox(
+                      width: 200,
+                      height: 200,
+                      child: Text(
+                        "Custom Widget",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Flexible(
+              flex: 0,
+              child: WithKeepKeyboardPopupMenu(
+                menuItemBuilder: (context, closePopup) => [
+                  KeepKeyboardPopupMenuItem(
+                    child: Text('awa'),
+                    onTap: closePopup,
+                  ),
+                  KeepKeyboardPopupMenuItem(
+                    child: Text('awa'),
+                    onTap: closePopup,
+                  ),
+                  KeepKeyboardPopupMenuItem(
+                    child: Text('awa'),
+                    onTap: closePopup,
+                  ),
+                ],
+                childBuilder: (context, openPopup) {
+                  return ElevatedButton(
+                    onPressed: openPopup,
+                    child: Text('Button'),
+                  );
+                },
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
