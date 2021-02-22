@@ -13,6 +13,10 @@ const double _kMenuMinWidth = 2.0 * _kMenuWidthStep;
 
 const double _kMenuVerticalPadding = 8.0;
 
+typedef Widget ChildBuilder(
+  BuildContext context,
+  OpenPopupFn openPopup,
+);
 typedef List<KeepKeyboardPopupMenuItem> MenuItemBuilder(
   BuildContext context,
   ClosePopupFn closePopup,
@@ -21,6 +25,7 @@ typedef Widget MenuBuilder(
   BuildContext context,
   ClosePopupFn closePopup,
 );
+typedef Future<void> OpenPopupFn();
 typedef Future<void> ClosePopupFn();
 
 enum PopupMenuState {
@@ -31,14 +36,14 @@ enum PopupMenuState {
 }
 
 class WithKeepKeyboardPopupMenu extends StatefulWidget {
-  final Widget child;
+  final ChildBuilder childBuilder;
   final MenuBuilder? menuBuilder;
   final MenuItemBuilder? menuItemBuilder;
   final CalculateMenuPosition? calculateMenuPosition;
   final PopupMenuBackgroundBuilder? backgroundBuilder;
 
   WithKeepKeyboardPopupMenu({
-    required this.child,
+    required this.childBuilder,
     this.menuBuilder,
     this.menuItemBuilder,
     this.calculateMenuPosition,
@@ -73,7 +78,7 @@ class WithKeepKeyboardPopupMenuState extends State<WithKeepKeyboardPopupMenu> {
       },
       child: Container(
         key: _childKey,
-        child: widget.child,
+        child: widget.childBuilder(context, openPopupMenu),
       ),
     );
   }
