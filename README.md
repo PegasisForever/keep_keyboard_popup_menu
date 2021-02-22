@@ -23,7 +23,7 @@ Intended to replace [`PopupMenuItem`](https://api.flutter.dev/flutter/material/P
 KeepKeyboardPopupMenuItem(
     child: Text('awa'),
     onTap: () {},
-);
+)
 ```
 
 ## `KeepKeyboardPopupMenuButton`
