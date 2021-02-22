@@ -1,3 +1,4 @@
-## [0.0.1] - TODO: Add release date.
+## [1.0.0-dev.0] - Feb. 21, 2021
 
-* TODO: Describe initial release.
+* Initial release.
+* The package is stable, reason it is pre-release is because it uses dart sound null safety which is in pre-release.
