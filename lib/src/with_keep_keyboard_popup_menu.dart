@@ -91,7 +91,7 @@ class WithKeepKeyboardPopupMenuState extends State<WithKeepKeyboardPopupMenu> {
     );
   }
 
-  Rect _getOverlayRect() {
+  Rect _getOverlayRect(BuildContext context) {
     final MediaQueryData mediaQuery = MediaQuery.of(context);
     final padding = mediaQuery.padding.copyWith(
       bottom: max(mediaQuery.viewInsets.bottom, mediaQuery.padding.bottom),
@@ -120,7 +120,6 @@ class WithKeepKeyboardPopupMenuState extends State<WithKeepKeyboardPopupMenu> {
   }
 
   Future<void> openPopupMenu() async {
-    _getOverlayRect();
     if (menuState == PopupMenuState.CLOSED) {
       menuState = PopupMenuState.OPENING;
 
@@ -137,7 +136,7 @@ class WithKeepKeyboardPopupMenuState extends State<WithKeepKeyboardPopupMenu> {
             CustomSingleChildLayout(
               delegate: PopupMenuRouteLayout(
                 buttonRect: _getChildRect(),
-                overlayRect: _getOverlayRect(),
+                overlayRect: _getOverlayRect(context),
                 calculateMenuPosition: widget.calculateMenuPosition,
               ),
               child: AnimatedPopupMenu(
