@@ -11,6 +11,9 @@
 
 * Only changes version name
 
-## [1.0.1] - Feb. 21, 2021
+## [1.0.1] - Feb. 24, 2021
 
 * Non-nullsafety version
+
+## [2.0.0-nullsafety.0] - Feb. 24, 2021
+* Renamed from [1.0.0-nullsafety.2]
