@@ -12,15 +12,17 @@ typedef Widget PopupMenuBackgroundBuilder(
 /// Implements the menu opening and closing animation.
 class AnimatedPopupMenu extends StatefulWidget {
   final Widget child;
-  final VoidCallback? onFullyOpened;
+  final VoidCallback onFullyOpened;
   final PopupMenuBackgroundBuilder backgroundBuilder;
 
   const AnimatedPopupMenu({
-    Key? key,
-    required this.child,
-    required this.backgroundBuilder,
+    Key key,
+    @required this.child,
+    @required this.backgroundBuilder,
     this.onFullyOpened,
-  }) : super(key: key);
+  })  : assert(child != null),
+        assert(backgroundBuilder != null),
+        super(key: key);
 
   @override
   AnimatedPopupMenuState createState() => AnimatedPopupMenuState();
@@ -41,10 +43,10 @@ class AnimatedPopupMenuState extends State<AnimatedPopupMenu>
     curve: Curves.linear,
   );
 
-  late final AnimationController _enterAnimationController;
-  late final Animation<double> _enterAnimation;
-  late final AnimationController _exitAnimationController;
-  late final Animation<double> _exitAnimation;
+  AnimationController _enterAnimationController;
+  Animation<double> _enterAnimation;
+  AnimationController _exitAnimationController;
+  Animation<double> _exitAnimation;
 
   @override
   void initState() {
@@ -55,7 +57,7 @@ class AnimatedPopupMenuState extends State<AnimatedPopupMenu>
     _enterAnimation =
         Tween(begin: 0.0, end: 1.0).animate(_enterAnimationController);
     _enterAnimationController.forward().then((value) {
-      if (widget.onFullyOpened != null) widget.onFullyOpened!();
+      if (widget.onFullyOpened != null) widget.onFullyOpened();
     });
 
     _exitAnimationController = AnimationController(
@@ -74,7 +76,7 @@ class AnimatedPopupMenuState extends State<AnimatedPopupMenu>
       builder: (BuildContext context, child) {
         return Opacity(
           opacity: exitOpacityTween.evaluate(_exitAnimation),
-          child: child!,
+          child: child,
         );
       },
       child: AnimatedBuilder(

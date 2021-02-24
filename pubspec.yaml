@@ -1,10 +1,10 @@
 name: keep_keyboard_popup_menu
 description: A popup menu that will keep keyboard open.
-version: 1.0.0-nullsafety.2
+version: 1.0.1
 repository: https://github.com/PegasisForever/keep_keyboard_popup_menu
 
 environment:
-  sdk: ">=2.12.0-0 <3.0.0"
+  sdk: ">=2.8.0 <3.0.0"
   flutter: ">=1.17.0"
 
 dependencies:

@@ -11,22 +11,22 @@ import './with_keep_keyboard_popup_menu.dart';
 /// soft keyboard is opened. I think the fix should be done in the Flutter
 /// framework or by another package.
 class KeepKeyboardPopupMenuButton extends StatelessWidget {
-  final Widget? child;
-  final Widget? icon;
+  final Widget child;
+  final Widget icon;
   final bool enabled;
-  final MenuBuilder? menuBuilder;
-  final MenuItemBuilder? menuItemBuilder;
+  final MenuBuilder menuBuilder;
+  final MenuItemBuilder menuItemBuilder;
   final EdgeInsetsGeometry padding;
-  final double? iconSize;
+  final double iconSize;
 
   const KeepKeyboardPopupMenuButton({
-    Key? key,
+    Key key,
     this.icon,
     this.enabled = true,
     this.menuBuilder,
     this.menuItemBuilder,
     this.padding = const EdgeInsets.all(8.0),
-    this.iconSize,
+    this.iconSize = 24.0,
     this.child,
   })  : assert((menuBuilder == null) != (menuItemBuilder == null),
             'You can only pass one of [menuBuilder] and [menuItemBuilder].'),
@@ -47,7 +47,7 @@ class KeepKeyboardPopupMenuButton extends StatelessWidget {
           return IconButton(
             icon: icon ?? Icon(Icons.adaptive.more),
             padding: padding,
-            iconSize: iconSize ?? 24.0,
+            iconSize: iconSize,
             onPressed: enabled ? openPopup : null,
           );
         }

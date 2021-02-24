@@ -14,10 +14,12 @@ typedef Offset CalculatePopupPosition(
 
 class PopupMenuRouteLayout extends SingleChildLayoutDelegate {
   PopupMenuRouteLayout({
-    required this.buttonRect,
-    required this.overlayRect,
-    required this.calculatePopupPosition,
-  });
+    @required this.buttonRect,
+    @required this.overlayRect,
+    @required this.calculatePopupPosition,
+  })  : assert(buttonRect != null),
+        assert(overlayRect != null),
+        assert(calculatePopupPosition != null);
 
   /// Rect of the button that triggered this popup.
   final Rect buttonRect;
