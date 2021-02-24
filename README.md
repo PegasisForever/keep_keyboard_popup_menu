@@ -4,7 +4,7 @@ A popup menu that will keep the soft keyboard open. This package is created to s
 
 <img src="https://raw.githubusercontent.com/PegasisForever/keep_keyboard_popup_menu/master/example/screenshots/1.gif" width="200"/>
 
-# How Does It work?
+# How Does It Work?
 
 Unlike the popup menu created by [`PopupMenuButton`](https://api.flutter.dev/flutter/material/PopupMenuButton-class.html), which works by pushing
 a new route to the navigator and causes the soft keyboard to hide, the popup
