@@ -10,3 +10,7 @@
 ## [1.0.0-nullsafety.2] - Feb. 21, 2021
 
 * Only changes version name
+
+## [1.0.1] - Feb. 21, 2021
+
+* Non-nullsafety version
