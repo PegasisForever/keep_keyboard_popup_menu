@@ -45,7 +45,7 @@ class KeepKeyboardPopupMenuButton extends StatelessWidget {
           );
         } else {
           return IconButton(
-            icon: icon ?? Icon(Icons.adaptive.more),
+            icon: icon ?? _getIcon(Theme.of(context).platform),
             padding: padding,
             iconSize: iconSize,
             onPressed: enabled ? openPopup : null,
@@ -53,5 +53,20 @@ class KeepKeyboardPopupMenuButton extends StatelessWidget {
         }
       },
     );
+  }
+
+  Icon _getIcon(TargetPlatform platform) {
+    assert(platform != null);
+    switch (platform) {
+      case TargetPlatform.android:
+      case TargetPlatform.fuchsia:
+      case TargetPlatform.linux:
+      case TargetPlatform.windows:
+        return const Icon(Icons.more_vert);
+      case TargetPlatform.iOS:
+      case TargetPlatform.macOS:
+        return const Icon(Icons.more_horiz);
+    }
+    return null;
   }
 }
