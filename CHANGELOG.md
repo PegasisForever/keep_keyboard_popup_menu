@@ -25,3 +25,7 @@
 ## [1.0.3] - Feb. 24, 2021
 
 * Fix WillPopScope preventing swipe back on iOS.
+
+## [2.0.3] - Feb. 24, 2021
+
+* Nullsafety version of 1.0.3.
