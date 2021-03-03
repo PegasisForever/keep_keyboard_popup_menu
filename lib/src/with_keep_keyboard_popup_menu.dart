@@ -246,6 +246,8 @@ class WithKeepKeyboardPopupMenuState extends State<WithKeepKeyboardPopupMenu> {
       await _menuKey.currentState.hideMenu();
       _entry.remove();
       popupState = PopupMenuState.CLOSED;
+      if (mounted)
+        setState((){});
     }
   }
 }
