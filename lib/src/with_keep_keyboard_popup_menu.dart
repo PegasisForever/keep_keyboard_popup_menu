@@ -112,21 +112,30 @@ class WithKeepKeyboardPopupMenuState extends State<WithKeepKeyboardPopupMenu> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        if (popupState == PopupMenuState.OPENED ||
-            popupState == PopupMenuState.OPENING) {
-          closePopupMenu();
-          return false;
-        } else {
-          return true;
-        }
-      },
-      child: Container(
-        key: _childKey,
-        child: widget.childBuilder(context, openPopupMenu),
-      ),
+    bool preventPop = popupState == PopupMenuState.OPENED ||
+        popupState == PopupMenuState.OPENING;
+
+    Container mainView = Container(
+      key: _childKey,
+      child: widget.childBuilder(context, openPopupMenu),
     );
+    if (preventPop) {
+      return WillPopScope(
+          onWillPop: () async {
+            if (popupState == PopupMenuState.OPENED ||
+                popupState == PopupMenuState.OPENING) {
+              closePopupMenu();
+              return false;
+            } else {
+              return true;
+            }
+          },
+          child: mainView
+      );
+    }
+    else {
+      return mainView;
+    }
   }
 
   Rect _getChildRect() {
