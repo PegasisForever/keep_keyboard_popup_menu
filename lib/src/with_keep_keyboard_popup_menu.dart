@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'dart:math';
 import 'dart:io';
+import 'dart:math';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import 'animated_popup_menu.dart';
 import 'keep_keyboard_popup_menu_item.dart';
@@ -126,19 +126,18 @@ class WithKeepKeyboardPopupMenuState extends State<WithKeepKeyboardPopupMenu> {
     );
     if (kIsWeb || !Platform.isIOS) {
       return WillPopScope(
-          onWillPop: () async {
-            if (popupState == PopupMenuState.OPENED ||
-                popupState == PopupMenuState.OPENING) {
-              closePopupMenu();
-              return false;
-            } else {
-              return true;
-            }
-          },
-          child: mainView
+        onWillPop: () async {
+          if (popupState == PopupMenuState.OPENED ||
+              popupState == PopupMenuState.OPENING) {
+            closePopupMenu();
+            return false;
+          } else {
+            return true;
+          }
+        },
+        child: mainView,
       );
-    }
-    else {
+    } else {
       return mainView;
     }
   }
