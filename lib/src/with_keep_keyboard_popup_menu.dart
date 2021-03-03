@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 import 'animated_popup_menu.dart';
 import 'keep_keyboard_popup_menu_item.dart';
@@ -111,22 +113,34 @@ class WithKeepKeyboardPopupMenuState extends State<WithKeepKeyboardPopupMenu> {
   PopupMenuState popupState = PopupMenuState.CLOSED;
 
   @override
+  void dispose() {
+    super.dispose();
+    closePopupMenu();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        if (popupState == PopupMenuState.OPENED ||
-            popupState == PopupMenuState.OPENING) {
-          closePopupMenu();
-          return false;
-        } else {
-          return true;
-        }
-      },
-      child: Container(
-        key: _childKey,
-        child: widget.childBuilder(context, openPopupMenu),
-      ),
+    Container mainView = Container(
+      key: _childKey,
+      child: widget.childBuilder(context, openPopupMenu),
     );
+    if (kIsWeb || !Platform.isIOS) {
+      return WillPopScope(
+          onWillPop: () async {
+            if (popupState == PopupMenuState.OPENED ||
+                popupState == PopupMenuState.OPENING) {
+              closePopupMenu();
+              return false;
+            } else {
+              return true;
+            }
+          },
+          child: mainView
+      );
+    }
+    else {
+      return mainView;
+    }
   }
 
   Rect _getChildRect() {
