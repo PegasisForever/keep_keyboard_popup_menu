@@ -17,3 +17,11 @@
 
 ## [2.0.0-nullsafety.0] - Feb. 24, 2021
 * Renamed from [1.0.0-nullsafety.2]
+
+## [1.0.2] - Feb. 24, 2021
+
+* Fix issues running on Flutter stable.
+
+## [1.0.3] - Feb. 24, 2021
+
+* Fix WillPopScope preventing swipe back on iOS.
