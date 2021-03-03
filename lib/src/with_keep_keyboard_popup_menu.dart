@@ -111,6 +111,12 @@ class WithKeepKeyboardPopupMenuState extends State<WithKeepKeyboardPopupMenu> {
   PopupMenuState popupState = PopupMenuState.CLOSED;
 
   @override
+  void dispose() {
+    super.dispose();
+    closePopupMenu();
+  }
+
+  @override
   Widget build(BuildContext context) {
     bool preventPop = popupState == PopupMenuState.OPENED ||
         popupState == PopupMenuState.OPENING;
