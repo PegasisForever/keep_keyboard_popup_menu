@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 import 'animated_popup_menu.dart';
 import 'keep_keyboard_popup_menu_item.dart';
@@ -118,14 +120,11 @@ class WithKeepKeyboardPopupMenuState extends State<WithKeepKeyboardPopupMenu> {
 
   @override
   Widget build(BuildContext context) {
-    bool preventPop = popupState == PopupMenuState.OPENED ||
-        popupState == PopupMenuState.OPENING;
-
     Container mainView = Container(
       key: _childKey,
       child: widget.childBuilder(context, openPopupMenu),
     );
-    if (preventPop) {
+    if (kIsWeb || !Platform.isIOS) {
       return WillPopScope(
           onWillPop: () async {
             if (popupState == PopupMenuState.OPENED ||
