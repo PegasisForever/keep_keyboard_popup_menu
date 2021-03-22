@@ -29,3 +29,11 @@
 ## [2.0.3] - Feb. 24, 2021
 
 * Nullsafety version of 1.0.3.
+
+## [1.0.4] - Mar. 22, 2021
+
+* Fix error when `_childKey.currentContext == null`.
+
+## [2.0.4] - Mar. 22, 2021
+
+* Nullsafety version of 1.0.4.
