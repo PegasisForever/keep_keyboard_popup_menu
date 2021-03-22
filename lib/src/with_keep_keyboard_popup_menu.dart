@@ -141,9 +141,10 @@ class WithKeepKeyboardPopupMenuState extends State<WithKeepKeyboardPopupMenu> {
     }
   }
 
-  Rect _getChildRect() {
-    final childRenderBox =
-        _childKey.currentContext!.findRenderObject() as RenderBox;
+  Rect? _getChildRect() {
+    final context = _childKey.currentContext;
+    if (context == null) return null;
+    final childRenderBox = context.findRenderObject() as RenderBox;
     final childSize = childRenderBox.size;
     final childPos = childRenderBox.localToGlobal(Offset.zero);
     return Rect.fromLTWH(
@@ -185,10 +186,12 @@ class WithKeepKeyboardPopupMenuState extends State<WithKeepKeyboardPopupMenu> {
   /// Only has effect when popup is fully closed.
   Future<void> openPopupMenu() async {
     if (popupState == PopupMenuState.CLOSED) {
+      final childRect = _getChildRect();
+      if (childRect == null) return;
+
       popupState = PopupMenuState.OPENING;
 
       final openMenuCompleter = Completer<void>();
-
       _entry = OverlayEntry(builder: (context) {
         return Stack(
           children: [
@@ -199,7 +202,7 @@ class WithKeepKeyboardPopupMenuState extends State<WithKeepKeyboardPopupMenu> {
             ),
             CustomSingleChildLayout(
               delegate: PopupMenuRouteLayout(
-                buttonRect: _getChildRect(),
+                buttonRect: childRect,
                 overlayRect: _getOverlayRect(context),
                 calculatePopupPosition: widget.calculatePopupPosition,
               ),
