@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
 import 'animated_popup_menu.dart';
 import 'keep_keyboard_popup_menu_item.dart';
@@ -110,11 +111,24 @@ class WithKeepKeyboardPopupMenuState extends State<WithKeepKeyboardPopupMenu> {
   GlobalKey<AnimatedPopupMenuState> _menuKey = GlobalKey();
   OverlayEntry? _entry;
   PopupMenuState popupState = PopupMenuState.CLOSED;
+  late final StreamSubscription<bool> _keyboardVisibilitySub;
+
+  @override
+  void initState() {
+    super.initState();
+    _keyboardVisibilitySub = KeyboardVisibilityController()
+        .onChange
+        .distinct()
+        .listen((isKeyboardVisible) {
+      if (!isKeyboardVisible) closePopupMenu();
+    });
+  }
 
   @override
   void dispose() {
-    super.dispose();
+    _keyboardVisibilitySub.cancel();
     closePopupMenu();
+    super.dispose();
   }
 
   @override
