@@ -37,3 +37,7 @@
 ## [2.0.4] - Mar. 22, 2021
 
 * Nullsafety version of 1.0.4.
+
+## [2.0.5] - Mar. 22, 2021
+
+* Close the popup when the keyboard closes.
