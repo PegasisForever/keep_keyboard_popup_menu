@@ -210,7 +210,7 @@ class WithKeepKeyboardPopupMenuState extends State<WithKeepKeyboardPopupMenu> {
         return Stack(
           children: [
             Positioned.fill(
-              child: IgnorePointer(
+              child: AbsorbPointer(
                 child: GestureDetector(
                   onTap: closePopupMenu,
                 ),
