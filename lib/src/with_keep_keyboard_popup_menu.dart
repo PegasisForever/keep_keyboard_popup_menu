@@ -210,15 +210,10 @@ class WithKeepKeyboardPopupMenuState extends State<WithKeepKeyboardPopupMenu> {
         return Stack(
           children: [
             Positioned.fill(
-              child: GestureDetector(
-                onTap: closePopupMenu,
-                onLongPress: () {},
-                onVerticalDragStart: (_) {},
-                onVerticalDragDown: (_) {},
-                onVerticalDragUpdate: (_) {},
-                onHorizontalDragStart: (_) {},
-                onHorizontalDragDown: (_) {},
-                onHorizontalDragUpdate: (_) {},
+              child: IgnorePointer(
+                child: GestureDetector(
+                  onTap: closePopupMenu,
+                ),
               ),
             ),
             CustomSingleChildLayout(
