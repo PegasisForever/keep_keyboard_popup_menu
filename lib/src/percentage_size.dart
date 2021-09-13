@@ -74,7 +74,7 @@ class _RenderPercentageSize extends RenderAligningShiftedBox {
       rect,
       super.paint,
       clipBehavior: _clipBehavior,
-      oldLayer: _clipRectLayer,
+      // oldLayer: _clipRectLayer, // fix error on flutter 2.5+
     );
   }
 }
